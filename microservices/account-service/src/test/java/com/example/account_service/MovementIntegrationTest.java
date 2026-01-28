@@ -57,8 +57,8 @@ public class MovementIntegrationTest {
         dto.setAmount(new BigDecimal("500.00"));
 
         // Validar cliente antes de crear movimiento
-       // CustomerDTO customer = customerClient.getCustomer(account.getCustomerId());
-       // assertNotNull(customer);
+        CustomerDTO customer = customerClient.getCustomer(account.getCustomerId());
+        assertNotNull(customer);
 
         Movement movement = new Movement();
         movement.setAccount(account);
