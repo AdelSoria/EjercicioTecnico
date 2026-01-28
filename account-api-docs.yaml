@@ -1,0 +1,275 @@
+---
+openapi: 3.1.0
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8082
+  description: Generated server url
+paths:
+  "/api/v1/movements/{id}":
+    put:
+      tags:
+      - movement-controller
+      operationId: update
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/MovementRequestDTO"
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/MovementResponseDTO"
+    delete:
+      tags:
+      - movement-controller
+      operationId: delete
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: OK
+  "/api/v1/accounts/{id}":
+    put:
+      tags:
+      - account-controller
+      operationId: update_1
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/AccountRequestDTO"
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/AccountResponseDTO"
+    delete:
+      tags:
+      - account-controller
+      operationId: delete_1
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: OK
+  "/api/v1/movements":
+    get:
+      tags:
+      - movement-controller
+      operationId: list
+      responses:
+        '200':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/MovementResponseDTO"
+    post:
+      tags:
+      - movement-controller
+      operationId: create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/MovementRequestDTO"
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/MovementResponseDTO"
+  "/api/v1/accounts":
+    get:
+      tags:
+      - account-controller
+      operationId: list_1
+      responses:
+        '200':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/AccountResponseDTO"
+    post:
+      tags:
+      - account-controller
+      operationId: create_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/AccountRequestDTO"
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/AccountResponseDTO"
+  "/reports/{clientId}":
+    get:
+      tags:
+      - report-controller
+      operationId: generateReport
+      parameters:
+      - name: clientId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: startDate
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date
+      - name: endDate
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date
+      responses:
+        '200':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/AccountStatementReportDTO"
+components:
+  schemas:
+    MovementRequestDTO:
+      type: object
+      properties:
+        accountId:
+          type: integer
+          format: int64
+        type:
+          type: string
+          minLength: 1
+        amount:
+          type: number
+      required:
+      - accountId
+      - amount
+      - type
+    MovementResponseDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        type:
+          type: string
+        amount:
+          type: number
+        balance:
+          type: number
+        date:
+          type: string
+          format: date-time
+    AccountRequestDTO:
+      type: object
+      properties:
+        number:
+          type: string
+          minLength: 1
+        type:
+          type: string
+          minLength: 1
+        initialBalance:
+          type: number
+        state:
+          type: boolean
+        customerId:
+          type: integer
+          format: int64
+      required:
+      - customerId
+      - initialBalance
+      - number
+      - state
+      - type
+    AccountResponseDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        number:
+          type: string
+        type:
+          type: string
+        initialBalance:
+          type: number
+        state:
+          type: boolean
+        customerId:
+          type: integer
+          format: int64
+    AccountStatementReportDTO:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date-time
+        client:
+          type: string
+        accountNumber:
+          type: string
+        accountType:
+          type: string
+        initialBalance:
+          type: number
+        state:
+          type: boolean
+        movementAmount:
+          type: number
+        movementType:
+          type: string
+        availableBalance:
+          type: number
