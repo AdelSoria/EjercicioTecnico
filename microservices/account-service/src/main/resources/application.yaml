@@ -21,4 +21,4 @@ server:
 
 customer:
   service:
-    url: http://localhost:8081/api/v1/customers
+    url: ${CUSTOMER_SERVICE_URL}
